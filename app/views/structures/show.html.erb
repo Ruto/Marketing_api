@@ -1,0 +1,44 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @structure.name %>
+</p>
+
+<p>
+  <strong>Alias:</strong>
+  <%= @structure.alias %>
+</p>
+
+<p>
+  <strong>Type:</strong>
+  <%= @structure.type %>
+</p>
+
+<p>
+  <strong>Ancestry:</strong>
+  <%= @structure.ancestry %>
+</p>
+
+<p>
+  <strong>Category:</strong>
+  <%= @structure.category %>
+</p>
+
+<p>
+  <strong>Active:</strong>
+  <%= @structure.active %>
+</p>
+
+<p>
+  <strong>Structure:</strong>
+  <%= @structure.structure_id %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @structure.user_id %>
+</p>
+
+<%= link_to 'Edit', edit_structure_path(@structure) %> |
+<%= link_to 'Back', structures_path %>
