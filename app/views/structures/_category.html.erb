@@ -1,0 +1,14 @@
+<% if cf == nil %>
+<%= f.select :category, %w[ Company Holding_Company], {include_blank: true, required: true}, {:class => "form-control"} %>
+<% f.hint "Note: Holding_Company does not generate any P%L accounts"%>
+<% elsif cf.category == "Company" %>
+<%= f.select :category, %w[Department], {include_blank: true, required: true}, {:class => "form-control"} %>
+<% elsif cf.category == "Department" %>
+<%= f.select :category, %w[Sub_Department], {include_blank: true, required: true}, {:class => "form-control"} %>
+<% elsif cf.category == "Sub_Department"%>
+<%= f.select :category, %w[ Sub_Department Product_Group Product], {include_blank: true, required: true}, {:class => "form-control"} %>
+<% elsif cf.category == "Product_Group" %>
+<%= f.select :category, %w[ Product ], {include_blank: true, required: true}, {:class => "form-control"} %>
+<% else %>
+<%= f.select :category, %w[ Holding_Company Company Department Sub_Department Product_Group Product], {include_blank: true, required: true}, {:class => "form-control"} %>
+<% end %>

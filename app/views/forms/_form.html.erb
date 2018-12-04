@@ -1,16 +1,16 @@
 
-<%= simple_form_for(@structure) do |f| %>
+<%= simple_form_for(@form) do |f| %>
   <%= f.error_notification %>
   <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
 
   <div class="form-inputs">
     <%= f.input :name %>
     <%= f.input :alias %>
-    <%= f.input :parent_id, as: :hidden %>
-    <% cf = @category %>
-    <%= render "category", cf: cf, f: f %>
-
-  </div></br>
+    <%= f.input :type %>
+    <%= f.input :active %>
+    <%= f.association :structure %>
+    <%= f.association :user %>
+  </div>
 
   <div class="form-actions">
     <%= f.button :submit %>

@@ -10,10 +10,48 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_15_195143) do
+ActiveRecord::Schema.define(version: 2018_11_24_111322) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "forms", force: :cascade do |t|
+    t.string "name"
+    t.string "alias"
+    t.string "type"
+    t.boolean "active", default: true
+    t.bigint "structure_id"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["structure_id"], name: "index_forms_on_structure_id"
+    t.index ["user_id"], name: "index_forms_on_user_id"
+  end
+
+  create_table "staffs", force: :cascade do |t|
+    t.string "staff_no"
+    t.string "first_name"
+    t.string "last_name"
+    t.string "middle_name"
+    t.string "id_no"
+    t.string "mobile"
+    t.string "gender"
+    t.string "Marital_status"
+    t.string "photo"
+    t.string "id_copy"
+    t.string "description"
+    t.date "DOB"
+    t.string "email"
+    t.string "password_digest"
+    t.string "auth_token"
+    t.datetime "logintime"
+    t.bigint "structure_id"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["structure_id"], name: "index_staffs_on_structure_id"
+    t.index ["user_id"], name: "index_staffs_on_user_id"
+  end
 
   create_table "structures", force: :cascade do |t|
     t.string "name"
@@ -55,4 +93,8 @@ ActiveRecord::Schema.define(version: 2018_11_15_195143) do
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
+  add_foreign_key "forms", "structures"
+  add_foreign_key "forms", "users"
+  add_foreign_key "staffs", "structures"
+  add_foreign_key "staffs", "users"
 end

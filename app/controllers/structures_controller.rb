@@ -14,7 +14,14 @@ class StructuresController < ApplicationController
 
   # GET /structures/new
   def new
-    @structure = Structure.new
+    @structure = Structure.new(:parent_id => params[:parent_id])
+    #binding.pry
+    if params[:parent_id].present?
+      @category = Structure.find(params[:parent_id])
+    else
+      @category = nil
+    end
+
   end
 
   # GET /structures/1/edit
@@ -28,6 +35,23 @@ class StructuresController < ApplicationController
 
     respond_to do |format|
       if @structure.save
+        # @structure.update(:structure_id => @structure.id)
+          @category_array = ["Department", "Company", "Sub_Department", "Product_Group"]
+
+        if @category_array.include? @structure.category
+            totals_array = ["Income", "Expense", "IndirectExpense", "AdminstrativeCost"]
+            totals_array.each do |total|
+                 Structure.create(:name => "#{@structure.name} #{total.pluralize}", :parent => get_parent(total), :type => "Structures::#{total}", :category => total, :structure_id => @structure.id)
+            end
+        elsif  @structure.category == "Product"
+            products_array = ["ProductSale", "ProductExpense"]
+            products_array.each do |product|
+                 Structure.create(:name => "#{@structure.name} #{product}", :parent => get_product_parent(product), :type => "Structures::#{product}", :category => product, :structure_id => @structure.id)
+            end
+        else
+
+        end
+
         format.html { redirect_to @structure, notice: 'Structure was successfully created.' }
         format.json { render :show, status: :created, location: @structure }
       else
@@ -55,6 +79,9 @@ class StructuresController < ApplicationController
   # DELETE /structures/1.json
   def destroy
     @structure.destroy
+    Structure.where(:structure_id => @structure.id).each do |structure|
+      structure.destroy
+    end
     respond_to do |format|
       format.html { redirect_to structures_url, notice: 'Structure was successfully destroyed.' }
       format.json { head :no_content }
@@ -69,6 +96,26 @@ class StructuresController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def structure_params
-      params.require(:structure).permit(:name, :alias, :type, :ancestry, :category, :active, :structure_id, :user_id)
+      params.require(:structure).permit(:name, :alias, :type, :parent_id, :category, :active, :structure_id)
     end
+
+    def get_parent(total)
+        if @structure.parent != nil and @category_array.include? @structure.category
+          "Structures::#{total}".classify.constantize.find_by(:structure_id => @structure.parent.id)
+        else
+          return nil
+        end
+    end
+
+    def get_product_parent(product)
+        if product == "ProductSale"
+           Structures::Income.find_by(:structure_id => @structure.parent.id)
+        elsif product == "ProductExpense"
+           Structures::Expense.find_by(:structure_id => @structure.parent.id)
+        else
+          return nil
+        end
+    end
+
+
 end
