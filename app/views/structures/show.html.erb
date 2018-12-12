@@ -35,5 +35,8 @@
   <%= @structure.structure_id %>
 </p>
 
-<%= link_to 'Edit', edit_structure_path(@structure) %> |
-<%= link_to 'Back', structures_path %>
+<%= link_to 'Edit', edit_structure_path(@structure), :class => 'btn btn-warning' %>
+<%= link_to 'Back', structures_path, :class => 'btn btn-danger' %>
+<% if @structure.category == "Department" %>
+  <%= link_to 'Overall Department Expenses ', structures_path, :class => 'btn btn-success' %>
+<% end %>
