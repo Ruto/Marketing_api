@@ -39,4 +39,8 @@
 <%= link_to 'Back', structures_path, :class => 'btn btn-danger' %>
 <% if @structure.category == "Department" %>
   <%= link_to 'Overall Department Expenses ', structures_path, :class => 'btn btn-success' %>
+<% elsif @structure.category == "ProductExpense" %>
+    <%= link_to 'Add Expense items ', structures_path, :class => 'btn btn-success' %>
+<% else %>
+    
 <% end %>
